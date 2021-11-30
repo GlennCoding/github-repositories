@@ -13,17 +13,31 @@ const ORG: string = "laravel";
 const Home: NextPage = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [repositories, setRepositories] = useState([]);
 
   const { data: organisation } = useOrganisation(ORG);
   const {
     status,
-    data: repositories,
+    data: fetchedRepositories,
     error,
     isFetching,
     isPreviousData,
   } = useQuery(["repositories", page], () => fetchRepositories(ORG, page), {
     keepPreviousData: true,
   });
+
+  useEffect(() => {
+    setRepositories(fetchedRepositories);
+  }, [fetchedRepositories]);
+
+  const updateSearchInput = (input: string) => {
+    const filtered = fetchedRepositories.filter((repo: any) => {
+      return repo.name.toLowerCase().includes(input.toLowerCase());
+    });
+    setSearchInput(input);
+    setRepositories(filtered);
+  };
 
   const numberOfRepos = organisation && organisation["public_repos"];
   const hasMore = useMemo(
@@ -39,16 +53,19 @@ const Home: NextPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-10">
-      <SearchBar />
+      <SearchBar
+        searchInput={searchInput}
+        updateSearchInput={updateSearchInput}
+      />
 
       {repositories && (
-        <div className="mb-10 rounded-md border border-gray-300 divide-y">
+        <ul className="mb-10 rounded-md border border-gray-300 divide-y">
           {repositories.map((repo: any) => (
-            <div key={repo.id}>
+            <li key={repo.id}>
               <Repository repo={repo} />
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
 
       <PaginationMenu
