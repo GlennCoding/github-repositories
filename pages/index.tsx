@@ -8,10 +8,9 @@ import useOrganisation from "../data/useOrganisation";
 import { checkHasMore } from "../utils/checkHasMore";
 import Repository from "../components/Repository";
 import SearchBar from "../components/SearchBar";
-import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { RepositoryType } from "../utils/types";
+import FilterDropdown from "../components/FilterDropdown/FilterDropdown";
 import { REPOSITORY_TYPES } from "../utils/constants/repositories";
-import { capitalizeFirstLetter } from "../utils/formatting";
 
 const ORG: string = "laravel";
 
@@ -21,6 +20,7 @@ const Home: NextPage = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [repositories, setRepositories] = useState([]);
   const [selectedType, setSelectedType] = useState<RepositoryType>("all");
+  const [showTypeFilter, setShowTypeFilter] = useState<boolean>(false);
 
   const { data: organisation } = useOrganisation(ORG);
   const {
@@ -69,37 +69,28 @@ const Home: NextPage = () => {
           />
         </div>
         <div className="flex">
-          <div className="flex items-center py-1.5 px-4 rounded-md bg-gray-100 border-gray-300 border shadow-sm cursor-pointer relative">
-            <p className="mr-1 text-sm font-medium">Language</p>
-            <Image src="/icons/caret.svg" height={4} width={8} alt="" />
-            {/* DROPDOWN */}
-            <div className="absolute xl:right-0 xl:left-auto left-0 top-10 text-xs bg-white w-72 border-gray-300 border rounded-md shadow-md">
-              <div className="pl-4 pr-2 py-2 flex justify-between items-center border-b">
-                <p className="font-medium">Select Language</p>
-                <XIcon size={16} className="text-gray-500 hover:text-black" />
-              </div>
-              <ol className="list-none divide-y">
-                {REPOSITORY_TYPES.map((type, i) => {
-                  return (
-                    <li
-                      key={i}
-                      className="px-4 py-2 hover:bg-gray-100"
-                      onClick={() => setSelectedType(type)}
-                    >
-                      <p>
-                        <CheckIcon
-                          size={16}
-                          className={`mr-3 ${
-                            type !== selectedType && "invisible"
-                          }`}
-                        />
-                        {capitalizeFirstLetter(type)}
-                      </p>
-                    </li>
-                  );
-                })}
-              </ol>
+          <div className="relative">
+            <div
+              onClick={() => setShowTypeFilter(true)}
+              className="flex items-center py-1.5 px-4 rounded-md bg-gray-100 border-gray-300 border shadow-sm cursor-pointer"
+            >
+              <p className="mr-1 text-sm font-medium">Type</p>
+              <Image src="/icons/caret.svg" height={4} width={8} alt="" />
             </div>
+            {showTypeFilter && (
+              <FilterDropdown
+                title="Select Type"
+                selectedType={selectedType}
+                filterOptions={REPOSITORY_TYPES}
+                onSelect={(filter) => {
+                  setSelectedType(filter);
+                  setShowTypeFilter(false);
+                }}
+                onClose={() => {
+                  setShowTypeFilter(false);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
