@@ -1,64 +1,56 @@
-import axios from "axios";
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
+import fetchRepositories from "../data/fetchRepositories";
+import useOrganisation from "../data/useOrganisation";
+import { checkHasMore } from "../utils/checkHasMore";
 
 const ORG: string = "laravel";
-
-async function fetchRepositories(org: string, page: number) {
-  const { data } = await axios.get(
-    `https://api.github.com/orgs/${org}/repos?page=${page}`
-  );
-  return data;
-}
 
 const Home: NextPage = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
 
-  const { status, data, error, isFetching, isPreviousData } = useQuery(
-    ["repositories", page],
-    () => fetchRepositories(ORG, page),
-    { keepPreviousData: true }
+  const { data: organisation } = useOrganisation(ORG);
+  const {
+    status,
+    data: repositories,
+    error,
+    isFetching,
+    isPreviousData,
+  } = useQuery(["repositories", page], () => fetchRepositories(ORG, page), {
+    keepPreviousData: true,
+  });
+
+  const numberOfRepos = organisation && organisation["public_repos"];
+  const hasMore = useMemo(
+    () => checkHasMore(numberOfRepos, page),
+    [numberOfRepos, page]
   );
 
   useEffect(() => {
-    if (data?.hasMore) {
+    if (hasMore) {
       fetchRepositories(ORG, page + 1);
     }
-  }, [data, page, queryClient]);
-
-  console.log(data && data?.hasMore);
+  }, [hasMore, organisation, repositories, page, queryClient]);
 
   return (
-    <div>
-      {status === "loading" ? (
-        <div>Loading...</div>
-      ) : status === "error" ? (
-        <div>Error: {error.message}</div>
-      ) : (
+    <div className="p-20">
+      {repositories && (
         <div>
-          {data.map((repository: any) => (
+          {repositories.map((repository: any) => (
             <p key={repository.id}>{repository.name}</p>
           ))}
         </div>
       )}
-      <div>Current Page: {page}</div>
-      <button
-        onClick={() => setPage((old) => Math.max(old - 1, 0))}
-        disabled={page === 1}
-      >
-        Previous Page
-      </button>{" "}
-      <button
-        onClick={() => {
-          setPage((old) => (data?.hasMore ? old + 1 : old));
-        }}
-        disabled={isPreviousData || !data?.hasMore}
-      >
-        Next Page
-      </button>
-      {isFetching ? <span> Loading...</span> : null}{" "}
+
+      <PaginationMenu
+        page={page}
+        setPage={setPage}
+        isFetching={isFetching}
+        isPreviousData={isPreviousData}
+        hasMore={hasMore}
+      />
     </div>
   );
 };
