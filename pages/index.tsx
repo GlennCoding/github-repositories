@@ -6,6 +6,7 @@ import fetchRepositories from "../data/fetchRepositories";
 import useOrganisation from "../data/useOrganisation";
 import { checkHasMore } from "../utils/checkHasMore";
 import Repository from "../components/Repository";
+import SearchBar from "../components/SearchBar";
 
 const ORG: string = "laravel";
 
@@ -38,6 +39,8 @@ const Home: NextPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-10">
+      <SearchBar />
+
       {repositories && (
         <div className="mb-10 rounded-md border border-gray-300 divide-y">
           {repositories.map((repo: any) => (
