@@ -30,7 +30,7 @@ const FilterDropdown = <T extends unknown>({
       <div className="fixed inset-0 sm:opacity-0 bg-black opacity-40" />
       <div className="fixed flex inset-0 justify-center items-center sm:block sm:inset-auto sm:static">
         <div className={styles.DropdownBody} ref={ref}>
-          <div className="pl-4 pr-2 py-2 flex justify-between items-center border-b">
+          <div className="p-4 sm:pr-2 sm:py-2 flex justify-between items-center border-b">
             <p className="font-medium">{title}</p>
             <div onClick={onClose}>
               <XIcon
@@ -44,7 +44,7 @@ const FilterDropdown = <T extends unknown>({
               return (
                 <li
                   key={i}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                  className="py-4 px-4 sm:py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={() => {
                     onSelect(filter);
                   }}

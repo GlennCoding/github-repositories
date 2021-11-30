@@ -57,7 +57,7 @@ const Home: NextPage = () => {
     queryClient.prefetchQuery(["projects", page + 1], () =>
       fetchRepositories(ORG, page + 1, selectedType)
     );
-  }, [repositories, page, queryClient]);
+  }, [repositories, page, queryClient, selectedType]);
 
   return (
     <div className="container mx-auto px-4 py-10">
