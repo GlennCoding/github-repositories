@@ -18,7 +18,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <input
         value={searchInput}
         type="text"
-        className="text-sm w-full focus:outline-none focus:ring-2 focus:border-blue-200 group flex py-1.5 pr-2 pl-7 border-gray-300 border rounded-md items-center mb-2 placeholder-gray-500"
+        className="text-sm w-full focus:outline-none focus:ring-2 focus:border-blue-200 group flex py-1.5 pr-2 pl-7 border-gray-300 border rounded-md items-center placeholder-gray-500"
         placeholder="Find a repository..."
         onChange={(e) => updateSearchInput(e.target.value)}
       />
