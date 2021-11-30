@@ -1,8 +1,12 @@
 import axios from "axios";
-
-async function fetchRepositories(org: string, page: number) {
+import { RepositoryType } from "../utils/types";
+async function fetchRepositories(
+  org: string,
+  page: number,
+  type: RepositoryType
+) {
   const { data } = await axios.get(
-    `https://api.github.com/orgs/${org}/repos?page=${page}&per_page=30`
+    `https://api.github.com/orgs/${org}/repos?page=${page}&per_page=30&type=${type}`
   );
   return data;
 }

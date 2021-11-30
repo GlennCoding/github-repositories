@@ -9,6 +9,9 @@ import { checkHasMore } from "../utils/checkHasMore";
 import Repository from "../components/Repository";
 import SearchBar from "../components/SearchBar";
 import { XIcon, CheckIcon } from "@primer/octicons-react";
+import { RepositoryType } from "../utils/types";
+import { REPOSITORY_TYPES } from "../utils/constants/repositories";
+import { capitalizeFirstLetter } from "../utils/formatting";
 
 const ORG: string = "laravel";
 
@@ -17,15 +20,20 @@ const Home: NextPage = () => {
   const [page, setPage] = useState<number>(1);
   const [searchInput, setSearchInput] = useState<string>("");
   const [repositories, setRepositories] = useState([]);
+  const [selectedType, setSelectedType] = useState<RepositoryType>("all");
 
   const { data: organisation } = useOrganisation(ORG);
   const {
     data: fetchedRepositories,
     isFetching,
     isPreviousData,
-  } = useQuery(["repositories", page], () => fetchRepositories(ORG, page), {
-    keepPreviousData: true,
-  });
+  } = useQuery(
+    ["repositories", page, selectedType],
+    () => fetchRepositories(ORG, page, selectedType),
+    {
+      keepPreviousData: true,
+    }
+  );
 
   useEffect(() => {
     setRepositories(fetchedRepositories);
@@ -47,7 +55,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     queryClient.prefetchQuery(["projects", page + 1], () =>
-      fetchRepositories(ORG, page + 1)
+      fetchRepositories(ORG, page + 1, selectedType)
     );
   }, [repositories, page, queryClient]);
 
@@ -71,18 +79,25 @@ const Home: NextPage = () => {
                 <XIcon size={16} className="text-gray-500 hover:text-black" />
               </div>
               <ol className="list-none divide-y">
-                <li className="px-4 py-2">
-                  <p>
-                    <CheckIcon size={16} className="mr-3" />
-                    All
-                  </p>
-                </li>
-                <li className="px-4 py-2">
-                  <p>
-                    <CheckIcon size={16} className="mr-3 invisible" />
-                    All
-                  </p>
-                </li>
+                {REPOSITORY_TYPES.map((type, i) => {
+                  return (
+                    <li
+                      key={i}
+                      className="px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setSelectedType(type)}
+                    >
+                      <p>
+                        <CheckIcon
+                          size={16}
+                          className={`mr-3 ${
+                            type !== selectedType && "invisible"
+                          }`}
+                        />
+                        {capitalizeFirstLetter(type)}
+                      </p>
+                    </li>
+                  );
+                })}
               </ol>
             </div>
           </div>
