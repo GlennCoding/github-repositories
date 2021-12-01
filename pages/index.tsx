@@ -140,6 +140,7 @@ const Home: NextPage = () => {
         <div className="flex justify-center">
           {filteredRepositories &&
             filteredRepositories.length !== 0 &&
+            searchInput.length < 1 &&
             selectedType === "all" && (
               <PaginationMenu
                 page={page}
