@@ -1,9 +1,9 @@
 import { LawIcon, RepoForkedIcon, StarIcon } from "@primer/octicons-react";
 import { getNumberOfDaysInBetween } from "../utils/formatting";
-import { Repository } from "../utils/types";
+import { RepositoryDTO } from "../utils/types";
 
 interface RepositoryCardProps {
-  repo: Repository;
+  repo: RepositoryDTO;
 }
 
 const RepositoryCard: React.FC<RepositoryCardProps> = ({ repo }) => {

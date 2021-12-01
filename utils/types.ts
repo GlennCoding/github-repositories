@@ -7,7 +7,7 @@ export type RepositoryType =
   | "member"
   | "internal";
 
-export type Repository = {
+export type RepositoryDTO = {
   id: number;
   name: string;
   private: string;
@@ -19,4 +19,8 @@ export type Repository = {
   stargazers_count: number;
   updated_at: string;
   html_url: string;
+};
+
+export type OrganisationDTO = {
+  public_repos: number;
 };

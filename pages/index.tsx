@@ -8,10 +8,11 @@ import useOrganisation from "../data/useOrganisation";
 import { checkHasMore } from "../utils/checkHasMore";
 import RepositoryCard from "../components/RepositoryCard";
 import SearchBar from "../components/SearchBar";
-import { Repository, RepositoryType } from "../utils/types";
+import { RepositoryDTO, RepositoryType } from "../utils/types";
 import FilterDropdown from "../components/FilterDropdown";
 import { REPOSITORY_TYPES } from "../utils/constants/repositories";
 import { RepoIcon } from "@primer/octicons-react";
+import { QueryKeys } from "../utils/constants/cache";
 
 const ORG: string = "laravel";
 
@@ -27,8 +28,8 @@ const Home: NextPage = () => {
     data: repositories,
     isFetching,
     isPreviousData,
-  } = useQuery<Repository[]>(
-    ["repositories", page, selectedType],
+  } = useQuery<RepositoryDTO[]>(
+    [QueryKeys.REPOSITORIES, page, selectedType],
     () => fetchRepositories(ORG, page, selectedType),
     {
       keepPreviousData: true,
@@ -41,8 +42,9 @@ const Home: NextPage = () => {
   );
 
   useEffect(() => {
-    queryClient.prefetchQuery<Repository[]>(["projects", page + 1], () =>
-      fetchRepositories(ORG, page + 1, selectedType)
+    queryClient.prefetchQuery<RepositoryDTO[]>(
+      [QueryKeys.REPOSITORIES, page + 1],
+      () => fetchRepositories(ORG, page + 1, selectedType)
     );
   }, [repositories, page, queryClient, selectedType]);
 
@@ -93,7 +95,7 @@ const Home: NextPage = () => {
       )}
       {repositories && repositories.length !== 0 && (
         <ul className="mb-10 rounded-md border border-gray-300 divide-y">
-          {repositories.map((repo: Repository) => {
+          {repositories.map((repo: RepositoryDTO) => {
             repo.name.toLowerCase().includes(searchInput.toLowerCase()) && (
               <li key={repo.id}>
                 <RepositoryCard repo={repo} />

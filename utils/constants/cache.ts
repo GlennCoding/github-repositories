@@ -1,0 +1,4 @@
+export enum QueryKeys {
+  REPOSITORIES = "REPOSITORIES",
+  ORGANISATION = "ORGANISATION",
+}
