@@ -1,10 +1,9 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { useRef } from "react";
 import useOutsideClickDetector from "../../hooks/useOnOutsideClickDetector";
-import { REPOSITORY_TYPES } from "../../utils/constants/repositories";
 import { capitalizeFirstLetter } from "../../utils/formatting";
-import { RepositoryType } from "../../utils/types";
 import styles from "./FilterDropdown.module.css";
+import { motion } from "framer-motion";
 
 interface FilterDropdownProps<T> {
   selectedType: string;
@@ -22,14 +21,19 @@ const FilterDropdown = <T extends unknown>({
   onSelect,
 }: FilterDropdownProps<T>) => {
   const ref = useRef<HTMLDivElement>(null);
-
   useOutsideClickDetector(ref, () => onClose());
 
   return (
     <>
       <div className="fixed inset-0 sm:opacity-0 bg-black opacity-40" />
       <div className="fixed flex inset-0 justify-center items-center sm:block sm:inset-auto sm:static">
-        <div className={styles.DropdownBody} ref={ref}>
+        <motion.div
+          className={styles.DropdownBody}
+          ref={ref}
+          initial={{ y: -5, opacity: 0 }}
+          animate={{ y: 0, opacity: 100 }}
+          transition={{ ease: "easeInOut", duration: 0.1 }}
+        >
           <div className="p-4 sm:pr-2 sm:py-2 flex justify-between items-center border-b">
             <p className="font-medium">{title}</p>
             <div onClick={onClose}>
@@ -62,7 +66,7 @@ const FilterDropdown = <T extends unknown>({
               );
             })}
           </ol>
-        </div>
+        </motion.div>
       </div>
     </>
   );
