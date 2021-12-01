@@ -22,7 +22,7 @@ const RepositoryCard: React.FC<RepositoryCardProps> = ({ repo }) => {
   return (
     <div className="p-4">
       <div className="flex items-center">
-        <a href={html_url}>
+        <a href={html_url} target="_blank" rel="noreferrer">
           <h3 className="text-xl font-semibold mr-2 text-blue-600 hover:underline">
             {name}
           </h3>

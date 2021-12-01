@@ -48,6 +48,12 @@ const Home: NextPage = () => {
     );
   }, [repositories, page, queryClient, selectedType]);
 
+  const filteredRepositories =
+    repositories &&
+    repositories.filter((repo: RepositoryDTO) =>
+      repo.name.toLowerCase().includes(searchInput.toLowerCase())
+    );
+
   return (
     <div className="container mx-auto px-4 py-10">
       <div className="flex xl:space-x-4 xl:flex-row mb-4 flex-col space-x-0">
@@ -85,7 +91,7 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      {repositories && repositories.length === 0 && (
+      {filteredRepositories && filteredRepositories.length === 0 && (
         <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300 p-8">
           <RepoIcon size={24} className="text-gray-600 mb-4 mx-2" />
           <h3 className="text-xl font-semibold text-center">
@@ -93,32 +99,29 @@ const Home: NextPage = () => {
           </h3>
         </div>
       )}
-      {repositories && repositories.length !== 0 && (
+      {filteredRepositories && filteredRepositories.length !== 0 && (
         <ul className="mb-10 rounded-md border border-gray-300 divide-y">
-          {repositories.map((repo: RepositoryDTO) => {
-            if (
-              repo.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-              !searchInput
-            ) {
-              return (
-                <li key={repo.id}>
-                  <RepositoryCard repo={repo} />
-                </li>
-              );
-            }
+          {filteredRepositories.map((repo: RepositoryDTO) => {
+            return (
+              <li key={repo.id}>
+                <RepositoryCard repo={repo} />
+              </li>
+            );
           })}
         </ul>
       )}
 
       <div className="flex justify-center">
-        {selectedType === "all" && (
-          <PaginationMenu
-            page={page}
-            setPage={setPage}
-            isPreviousData={isPreviousData}
-            hasMore={hasMore}
-          />
-        )}
+        {filteredRepositories &&
+          filteredRepositories.length !== 0 &&
+          selectedType === "all" && (
+            <PaginationMenu
+              page={page}
+              setPage={setPage}
+              isPreviousData={isPreviousData}
+              hasMore={hasMore}
+            />
+          )}
       </div>
     </div>
   );
