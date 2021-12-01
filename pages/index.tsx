@@ -6,9 +6,9 @@ import PaginationMenu from "../components/PaginationMenu";
 import fetchRepositories from "../data/fetchRepositories";
 import useOrganisation from "../data/useOrganisation";
 import { checkHasMore } from "../utils/checkHasMore";
-import Repository from "../components/Repository";
+import RepositoryCard from "../components/RepositoryCard";
 import SearchBar from "../components/SearchBar";
-import { RepositoryType } from "../utils/types";
+import { Repository, RepositoryType } from "../utils/types";
 import FilterDropdown from "../components/FilterDropdown";
 import { REPOSITORY_TYPES } from "../utils/constants/repositories";
 import { RepoIcon } from "@primer/octicons-react";
@@ -19,16 +19,15 @@ const Home: NextPage = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
   const [searchInput, setSearchInput] = useState<string>("");
-  const [repositories, setRepositories] = useState([]);
   const [selectedType, setSelectedType] = useState<RepositoryType>("all");
   const [showTypeFilter, setShowTypeFilter] = useState<boolean>(false);
 
   const { data: organisation } = useOrganisation(ORG);
   const {
-    data: fetchedRepositories,
+    data: repositories,
     isFetching,
     isPreviousData,
-  } = useQuery(
+  } = useQuery<Repository[]>(
     ["repositories", page, selectedType],
     () => fetchRepositories(ORG, page, selectedType),
     {
@@ -36,25 +35,13 @@ const Home: NextPage = () => {
     }
   );
 
-  useEffect(() => {
-    setRepositories(fetchedRepositories);
-  }, [fetchedRepositories]);
-
-  const updateSearchInput = (input: string) => {
-    const filtered = fetchedRepositories.filter((repo: any) => {
-      return repo.name.toLowerCase().includes(input.toLowerCase());
-    });
-    setSearchInput(input);
-    setRepositories(filtered);
-  };
-
   const hasMore = useMemo(
     () => checkHasMore(organisation, page),
     [organisation, page]
   );
 
   useEffect(() => {
-    queryClient.prefetchQuery(["projects", page + 1], () =>
+    queryClient.prefetchQuery<Repository[]>(["projects", page + 1], () =>
       fetchRepositories(ORG, page + 1, selectedType)
     );
   }, [repositories, page, queryClient, selectedType]);
@@ -66,7 +53,7 @@ const Home: NextPage = () => {
           <SearchBar
             searchInput={searchInput}
             isFetching={isFetching}
-            updateSearchInput={updateSearchInput}
+            updateSearchInput={(input: string) => setSearchInput(input)}
           />
         </div>
         <div className="flex">
@@ -106,11 +93,13 @@ const Home: NextPage = () => {
       )}
       {repositories && repositories.length !== 0 && (
         <ul className="mb-10 rounded-md border border-gray-300 divide-y">
-          {repositories.map((repo: any) => (
-            <li key={repo.id}>
-              <Repository repo={repo} />
-            </li>
-          ))}
+          {repositories.map((repo: Repository) => {
+            repo.name.toLowerCase().includes(searchInput.toLowerCase()) && (
+              <li key={repo.id}>
+                <RepositoryCard repo={repo} />
+              </li>
+            );
+          })}
         </ul>
       )}
 

@@ -1,11 +1,12 @@
 import { LawIcon, RepoForkedIcon, StarIcon } from "@primer/octicons-react";
 import { getNumberOfDaysInBetween } from "../utils/formatting";
+import { Repository } from "../utils/types";
 
-interface RepositoryProps {
-  repo: any;
+interface RepositoryCardProps {
+  repo: Repository;
 }
 
-const Repository: React.FC<RepositoryProps> = ({ repo }) => {
+const RepositoryCard: React.FC<RepositoryCardProps> = ({ repo }) => {
   const {
     name,
     private: private_visibility,
@@ -75,4 +76,4 @@ const Repository: React.FC<RepositoryProps> = ({ repo }) => {
     </div>
   );
 };
-export default Repository;
+export default RepositoryCard;

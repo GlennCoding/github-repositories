@@ -12,7 +12,7 @@ interface FilterDropdownProps<T> {
   onSelect: (filter: T) => void;
 }
 
-const FilterDropdown = <T extends unknown>({
+const FilterDropdown = <T extends string>({
   selectedType,
   title,
   filterOptions,
@@ -43,10 +43,10 @@ const FilterDropdown = <T extends unknown>({
             </div>
           </div>
           <ol className="list-none divide-y">
-            {filterOptions.map((filter, i) => {
+            {filterOptions.map((filter) => {
               return (
                 <li
-                  key={i}
+                  key={filter}
                   className="py-4 px-4 sm:py-2 hover:bg-gray-100 cursor-pointer"
                   onClick={() => {
                     onSelect(filter);
