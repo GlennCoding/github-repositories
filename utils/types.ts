@@ -22,5 +22,8 @@ export type RepositoryDTO = {
 };
 
 export type OrganisationDTO = {
+  name: string;
+  html_url: string;
+  avatar_url: string;
   public_repos: number;
 };

@@ -55,75 +55,102 @@ const Home: NextPage = () => {
     );
 
   return (
-    <div className="container mx-auto px-4 py-10">
-      <div className="flex xl:space-x-4 xl:flex-row mb-4 flex-col space-x-0">
-        <div className="xl:w-5/12 xl:mb-0 md:w-8/12 w-full mb-2 ">
-          <SearchBar
-            searchInput={searchInput}
-            isFetching={isFetching}
-            updateSearchInput={(input: string) => setSearchInput(input)}
-          />
-        </div>
-        <div className="flex">
-          <div className="relative">
-            <div
-              onClick={() => setShowTypeFilter(true)}
-              className="flex items-center py-1.5 px-4 rounded-md bg-gray-100 border-gray-300 border shadow-sm cursor-pointer"
+    <>
+      <div className="bg-gray-100 border-b border-gray-300 mb-4">
+        <div className="container mx-auto px-4 pt-10 pb-4">
+          <div className="inline-block">
+            <a
+              href={organisation?.html_url}
+              className="flex items-center"
+              target="_blank"
+              rel="noreferrer"
             >
-              <p className="mr-1 text-sm font-medium">Type</p>
-              <Image src="/icons/caret.svg" height={4} width={8} alt="" />
-            </div>
-            {showTypeFilter && (
-              <FilterDropdown
-                title="Select Type"
-                selectedType={selectedType}
-                filterOptions={REPOSITORY_TYPES}
-                onSelect={(filter) => {
-                  setSelectedType(filter);
-                  setShowTypeFilter(false);
-                }}
-                onClose={() => {
-                  setShowTypeFilter(false);
-                }}
-              />
-            )}
+              <div className="mr-2 bg-white border-gray-300 border w-8 h-8 flex justify-center items-center rounded-md">
+                {organisation && (
+                  <img
+                    src="https://avatars.githubusercontent.com/u/958072?v=4"
+                    alt=""
+                    className="w-7 h-7 rounded-sm"
+                  />
+                )}
+              </div>
+              <h1 className="text-xl font-semibold">
+                {organisation ? organisation.name : "Loading..."}
+              </h1>
+            </a>
           </div>
         </div>
       </div>
-
-      {filteredRepositories && filteredRepositories.length === 0 && (
-        <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300 p-8">
-          <RepoIcon size={24} className="text-gray-600 mb-4 mx-2" />
-          <h3 className="text-xl font-semibold text-center">
-            This organization doesn’t have any repositories that match.
-          </h3>
-        </div>
-      )}
-      {filteredRepositories && filteredRepositories.length !== 0 && (
-        <ul className="mb-10 rounded-md border border-gray-300 divide-y">
-          {filteredRepositories.map((repo: RepositoryDTO) => {
-            return (
-              <li key={repo.id}>
-                <RepositoryCard repo={repo} />
-              </li>
-            );
-          })}
-        </ul>
-      )}
-
-      <div className="flex justify-center">
-        {filteredRepositories &&
-          filteredRepositories.length !== 0 &&
-          selectedType === "all" && (
-            <PaginationMenu
-              page={page}
-              setPage={setPage}
-              isPreviousData={isPreviousData}
-              hasMore={hasMore}
+      <div className="container mx-auto px-4 mb-10">
+        <div className="flex xl:space-x-4 xl:flex-row mb-4 flex-col space-x-0">
+          <div className="xl:w-5/12 xl:mb-0 md:w-8/12 w-full mb-2 ">
+            <SearchBar
+              searchInput={searchInput}
+              isFetching={isFetching}
+              updateSearchInput={(input: string) => setSearchInput(input)}
             />
-          )}
+          </div>
+          <div className="flex">
+            <div className="relative">
+              <div
+                onClick={() => setShowTypeFilter(true)}
+                className="flex items-center py-1.5 px-4 rounded-md bg-gray-100 border-gray-300 border shadow-sm cursor-pointer"
+              >
+                <p className="mr-1 text-sm font-medium">Type</p>
+                <Image src="/icons/caret.svg" height={4} width={8} alt="" />
+              </div>
+              {showTypeFilter && (
+                <FilterDropdown
+                  title="Select Type"
+                  selectedType={selectedType}
+                  filterOptions={REPOSITORY_TYPES}
+                  onSelect={(filter) => {
+                    setSelectedType(filter);
+                    setShowTypeFilter(false);
+                  }}
+                  onClose={() => {
+                    setShowTypeFilter(false);
+                  }}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {filteredRepositories && filteredRepositories.length === 0 && (
+          <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300 p-8">
+            <RepoIcon size={24} className="text-gray-600 mb-4 mx-2" />
+            <h3 className="text-xl font-semibold text-center">
+              This organization doesn’t have any repositories that match.
+            </h3>
+          </div>
+        )}
+        {filteredRepositories && filteredRepositories.length !== 0 && (
+          <ul className="mb-10 rounded-md border border-gray-300 divide-y">
+            {filteredRepositories.map((repo: RepositoryDTO) => {
+              return (
+                <li key={repo.id}>
+                  <RepositoryCard repo={repo} />
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <div className="flex justify-center">
+          {filteredRepositories &&
+            filteredRepositories.length !== 0 &&
+            selectedType === "all" && (
+              <PaginationMenu
+                page={page}
+                setPage={setPage}
+                isPreviousData={isPreviousData}
+                hasMore={hasMore}
+              />
+            )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
