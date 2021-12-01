@@ -3,11 +3,13 @@ import { SearchIcon } from "@primer/octicons-react";
 interface SearchBarProps {
   searchInput: string;
   updateSearchInput: (input: string) => void;
+  isFetching: boolean;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   searchInput,
   updateSearchInput,
+  isFetching,
 }) => {
   return (
     <div className="relative">
@@ -19,7 +21,8 @@ const SearchBar: React.FC<SearchBarProps> = ({
         value={searchInput}
         type="text"
         className="text-sm w-full focus:outline-none focus:ring-2 focus:border-blue-200 group flex py-1.5 pr-2 pl-7 border-gray-300 border rounded-md items-center placeholder-gray-500"
-        placeholder="Find a repository..."
+        placeholder={isFetching ? "Loading..." : "Find a repository..."}
+        disabled={isFetching}
         onChange={(e) => updateSearchInput(e.target.value)}
       />
     </div>

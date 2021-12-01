@@ -66,6 +66,7 @@ const Home: NextPage = () => {
         <div className="xl:w-5/12 xl:mb-0 md:w-8/12 w-full mb-2 ">
           <SearchBar
             searchInput={searchInput}
+            isFetching={isFetching}
             updateSearchInput={updateSearchInput}
           />
         </div>
@@ -96,10 +97,10 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      {repositories.length === 0 && (
-        <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300">
+      {repositories && repositories.length === 0 && (
+        <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300 p-8">
           <RepoIcon size={24} className="text-gray-600 mb-4 mx-2" />
-          <h3 className="text-xl font-semibold max-w-sm text-center">
+          <h3 className="text-xl font-semibold text-center">
             This organization doesn’t have any repositories that match.
           </h3>
         </div>
