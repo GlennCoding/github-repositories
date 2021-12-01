@@ -1,3 +1,0 @@
-.DropdownBody {
-  @apply w-full mx-4 text-sm rounded-lg sm:mx-0 sm:transform-none sm:absolute sm:top-10 sm:left-0 sm:right-auto sm:bottom-auto xl:left-auto xl:right-0 sm:text-xs bg-white sm:w-72 border-gray-300 border sm:rounded-md shadow-md;
-}

@@ -1,10 +1,4 @@
-import {
-  LawIcon,
-  RepoForkedIcon,
-  StarIcon,
-  IssueOpenedIcon,
-  GitPullRequestIcon,
-} from "@primer/octicons-react";
+import { LawIcon, RepoForkedIcon, StarIcon } from "@primer/octicons-react";
 import { getNumberOfDaysInBetween } from "../utils/formatting";
 
 interface RepositoryProps {

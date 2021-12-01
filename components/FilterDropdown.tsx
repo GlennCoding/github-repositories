@@ -1,8 +1,7 @@
 import { XIcon, CheckIcon } from "@primer/octicons-react";
 import { useRef } from "react";
-import useOutsideClickDetector from "../../hooks/useOnOutsideClickDetector";
-import { capitalizeFirstLetter } from "../../utils/formatting";
-import styles from "./FilterDropdown.module.css";
+import useOutsideClickDetector from "../hooks/useOnOutsideClickDetector";
+import { capitalizeFirstLetter } from "../utils/formatting";
 import { motion } from "framer-motion";
 
 interface FilterDropdownProps<T> {
@@ -28,7 +27,7 @@ const FilterDropdown = <T extends unknown>({
       <div className="fixed inset-0 sm:opacity-0 bg-black opacity-40" />
       <div className="fixed flex inset-0 justify-center items-center sm:block sm:inset-auto sm:static">
         <motion.div
-          className={styles.DropdownBody}
+          className="w-full mx-4 text-sm rounded-lg sm:mx-0 sm:transform-none sm:absolute sm:top-10 sm:left-0 sm:right-auto sm:bottom-auto xl:left-auto xl:right-0 sm:text-xs bg-white sm:w-72 border-gray-300 border sm:rounded-md shadow-md"
           ref={ref}
           initial={{ y: -5, opacity: 0 }}
           animate={{ y: 0, opacity: 100 }}
