@@ -68,7 +68,6 @@ const Repository: React.FC<RepositoryProps> = ({ repo }) => {
           </span>
           {stargazers_count}
         </div>
-        {/* Have to fetch pulls number */}
         <span>
           Updated {getNumberOfDaysInBetween(updated_at, new Date())} days ago
         </span>

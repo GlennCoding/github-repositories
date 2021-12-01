@@ -48,10 +48,9 @@ const Home: NextPage = () => {
     setRepositories(filtered);
   };
 
-  const numberOfRepos = organisation && organisation["public_repos"];
   const hasMore = useMemo(
-    () => checkHasMore(numberOfRepos, page),
-    [numberOfRepos, page]
+    () => checkHasMore(organisation, page),
+    [organisation, page]
   );
 
   useEffect(() => {

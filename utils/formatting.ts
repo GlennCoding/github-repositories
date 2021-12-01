@@ -9,8 +9,6 @@ export function getNumberOfDaysInBetween(
   const diffInTime = date2.getTime() - date1.getTime();
   const diffInDays = Math.round(diffInTime / oneDay);
 
-  // TODO: Show minutes, when under 1 day
-
   return diffInDays;
 }
 
