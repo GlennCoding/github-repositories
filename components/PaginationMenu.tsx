@@ -17,7 +17,10 @@ const PaginationMenu: React.FC<PaginationMenuProps> = ({
   return (
     <div className="flex text-sm items-center">
       <button
-        onClick={() => setPage((old) => Math.max(old - 1, 0))}
+        onClick={() => {
+          window.scrollTo(0, 0);
+          setPage((old) => Math.max(old - 1, 0));
+        }}
         disabled={page === 1}
         className={`px-2 py-1 rounded-md cursor-pointer hover:border-gray-300 border-transparent border hover:border-current mx-2 ${
           page === 1 ? "text-gray-500" : "text-blue-600"
@@ -32,6 +35,7 @@ const PaginationMenu: React.FC<PaginationMenuProps> = ({
       <button
         disabled={isPreviousData || !hasMore}
         onClick={() => {
+          window.scrollTo(0, 0);
           setPage((old) => old + 1);
         }}
         className={`px-2 py-1 rounded-md cursor-pointer hover:border-gray-300 border-transparent border hover:border-current mx-2 ${
