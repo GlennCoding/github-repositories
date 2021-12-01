@@ -96,11 +96,16 @@ const Home: NextPage = () => {
       {repositories && repositories.length !== 0 && (
         <ul className="mb-10 rounded-md border border-gray-300 divide-y">
           {repositories.map((repo: RepositoryDTO) => {
-            repo.name.toLowerCase().includes(searchInput.toLowerCase()) && (
-              <li key={repo.id}>
-                <RepositoryCard repo={repo} />
-              </li>
-            );
+            if (
+              repo.name.toLowerCase().includes(searchInput.toLowerCase()) ||
+              !searchInput
+            ) {
+              return (
+                <li key={repo.id}>
+                  <RepositoryCard repo={repo} />
+                </li>
+              );
+            }
           })}
         </ul>
       )}
