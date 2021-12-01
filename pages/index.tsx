@@ -9,8 +9,9 @@ import { checkHasMore } from "../utils/checkHasMore";
 import Repository from "../components/Repository";
 import SearchBar from "../components/SearchBar";
 import { RepositoryType } from "../utils/types";
-import FilterDropdown from "../components/FilterDropdown/FilterDropdown";
+import FilterDropdown from "../components/FilterDropdown";
 import { REPOSITORY_TYPES } from "../utils/constants/repositories";
+import { RepoIcon } from "@primer/octicons-react";
 
 const ORG: string = "laravel";
 
@@ -95,7 +96,15 @@ const Home: NextPage = () => {
         </div>
       </div>
 
-      {repositories && (
+      {repositories.length === 0 && (
+        <div className="h-72 flex flex-col justify-center items-center border-b border-gray-300">
+          <RepoIcon size={24} className="text-gray-600 mb-4 mx-2" />
+          <h3 className="text-xl font-semibold max-w-sm text-center">
+            This organization doesn’t have any repositories that match.
+          </h3>
+        </div>
+      )}
+      {repositories && repositories.length !== 0 && (
         <ul className="mb-10 rounded-md border border-gray-300 divide-y">
           {repositories.map((repo: any) => (
             <li key={repo.id}>
@@ -106,12 +115,14 @@ const Home: NextPage = () => {
       )}
 
       <div className="flex justify-center">
-        <PaginationMenu
-          page={page}
-          setPage={setPage}
-          isPreviousData={isPreviousData}
-          hasMore={hasMore}
-        />
+        {selectedType === "all" && (
+          <PaginationMenu
+            page={page}
+            setPage={setPage}
+            isPreviousData={isPreviousData}
+            hasMore={hasMore}
+          />
+        )}
       </div>
     </div>
   );
