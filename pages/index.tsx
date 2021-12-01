@@ -105,13 +105,14 @@ const Home: NextPage = () => {
         </ul>
       )}
 
-      <PaginationMenu
-        page={page}
-        setPage={setPage}
-        isFetching={isFetching}
-        isPreviousData={isPreviousData}
-        hasMore={hasMore}
-      />
+      <div className="flex justify-center">
+        <PaginationMenu
+          page={page}
+          setPage={setPage}
+          isPreviousData={isPreviousData}
+          hasMore={hasMore}
+        />
+      </div>
     </div>
   );
 };
