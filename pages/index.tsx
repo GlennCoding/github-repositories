@@ -36,10 +36,12 @@ const Home: NextPage = () => {
     }
   );
 
-  const hasMore = useMemo(
-    () => checkHasMore(organisation, page),
-    [organisation, page]
-  );
+  const hasMore = useMemo(() => {
+    if (organisation) {
+      return organisation["public_repos"] > page * 30;
+    }
+    return false;
+  }, [organisation, page]);
 
   useEffect(() => {
     queryClient.prefetchQuery<RepositoryDTO[]>(
