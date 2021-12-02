@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from "react-query";
 import PaginationMenu from "../components/PaginationMenu";
 import fetchRepositories from "../data/fetchRepositories";
 import useOrganisation from "../data/useOrganisation";
-import { checkHasMore } from "../utils/checkHasMore";
 import RepositoryCard from "../components/RepositoryCard";
 import SearchBar from "../components/SearchBar";
 import { RepositoryDTO, RepositoryType } from "../utils/types";
